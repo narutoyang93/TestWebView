@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+    var id=123456
+    function getId(){
+        return id;
+    }
+
+    function onClick(){
+        var result =window.bridge.callAndroidFunc("getUserName",JSON.stringify({'id':id}));
+        console.log(result)
+        document.getElementById("p").innerHTML=result;
+    }
+
+    </script>
+</head>
+<body>
+<h3>Native</h3>
+<button onclick="onClick()">获取Android用户名</button>
+<p id="p"></p>
+</body>
+</html>

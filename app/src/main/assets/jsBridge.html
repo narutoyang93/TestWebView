@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript">
+    var id=66666
+    function getId(){
+        return id;
+    }
+
+    function onClick() {
+        window.WebViewJavascriptBridge.send(
+            {action:"getUserName",id:id},
+            function(responseData) {
+                console.log(responseData);
+                document.getElementById("p").innerHTML=responseData;
+            }
+        );
+    }
+
+    function connectWebViewJavascriptBridge (callback) {
+        if (window.WebViewJavascriptBridge) {
+           callback(WebViewJavascriptBridge);
+        } else {
+           document.addEventListener(
+               'WebViewJavascriptBridgeReady',
+               function() {callback(WebViewJavascriptBridge)},
+               false
+           );
+        }
+    }
+
+    connectWebViewJavascriptBridge (function(bridge) {
+        bridge.init(function(message, responseCallback) {
+            console.log(message);
+            var json=JSON.parse(message)
+            var data;
+            switch(json.action){
+                case "getId":
+                    data=getId();
+                break;
+            }
+            responseCallback(data);
+        });
+    });
+
+    </script>
+</head>
+<body>
+<h3>JsBridge</h3>
+<button onclick="onClick()">获取Android用户名</button>
+<p id="p"></p>
+</body>
+</html>
